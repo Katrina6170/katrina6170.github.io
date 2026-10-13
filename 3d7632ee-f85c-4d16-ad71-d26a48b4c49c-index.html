@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小商店</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --line: rgba(255,255,255,.08);
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --accent: #6c8cff;
+    --wechat: #07c160;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding-bottom: 96px;
+  }
+  .container { width: min(1100px, 90%); margin: 0 auto; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(12px);
+    background: rgba(15,17,21,.78);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo { font-weight: 700; font-size: 1.15rem; letter-spacing: .5px; }
+  .logo span { color: var(--accent); }
+
+  .page-title { padding: 44px 0 26px; text-align: center; }
+  .page-title h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); letter-spacing: -0.5px; }
+  .page-title p { color: var(--muted); font-size: .95rem; margin-top: 6px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 20px;
+    padding-bottom: 50px;
+  }
+  .product {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex; flex-direction: column;
+    transition: transform .2s, border-color .2s;
+  }
+  .product:hover { transform: translateY(-4px); border-color: rgba(108,140,255,.45); }
+  .product[data-link] { cursor: pointer; }
+  .thumb {
+    height: 130px; border-radius: 12px;
+    background: linear-gradient(135deg, #1e2230, #15181f);
+    display: grid; place-items: center;
+    font-size: 3rem; margin-bottom: 14px;
+    user-select: none; overflow: hidden; flex: none;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+  .p-info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+  .product h3 { font-size: 1rem; font-weight: 600; }
+  .product .desc { color: var(--muted); font-size: .82rem; margin-bottom: 14px; }
+  .product .row {
+    margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .price { color: var(--accent); font-weight: 700; font-size: 1.05rem; }
+  .add-btn {
+    border: none; background: var(--accent); color: #fff;
+    font-size: .82rem; font-weight: 600;
+    padding: 9px 14px; border-radius: 999px;
+    cursor: pointer; transition: background .2s, transform .15s; white-space: nowrap;
+  }
+  .add-btn:hover { background: #5b7bf0; }
+  .add-btn:active { transform: scale(.94); }
+  .add-btn.added { background: #2fa36b; }
+
+  .product.featured {
+    grid-column: span 2;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    padding: 22px 20px 20px;
+    border: 1px solid rgba(255, 107, 107, .45);
+    background:
+      radial-gradient(400px 160px at 100% 0%, rgba(255,77,77,.18), transparent 70%),
+      linear-gradient(135deg, #1f1a1c, #171a21);
+    box-shadow: 0 0 0 1px rgba(255,77,77,.08), 0 18px 40px rgba(255,77,77,.10);
+  }
+  .product.featured:hover { border-color: rgba(255, 107, 107, .8); }
+  .product.featured .thumb { width: 210px; height: 150px; margin-bottom: 0; }
+  .product.featured .p-info { justify-content: center; gap: 4px; padding-top: 22px; }
+  .product.featured h3 { font-size: 1.25rem; }
+  .product.featured .desc { margin-bottom: 16px; }
+  .product.featured .price { font-size: 1.35rem; color: #ff6b6b; }
+
+  .hot-tag {
+    position: absolute; top: 12px; right: 14px;
+    display: flex; align-items: center; gap: 8px;
+    z-index: 2; pointer-events: none;
+  }
+  .hot-excl {
+    font-size: 1.7rem; font-weight: 900; line-height: 1;
+    letter-spacing: -3px; color: #ff3b3b;
+    text-shadow: 0 0 12px rgba(255,59,59,.9), 0 0 24px rgba(255,59,59,.55);
+    animation: exclBlink .75s infinite;
+  }
+  @keyframes exclBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .3; transform: scale(1.15); }
+  }
+  .hot-text {
+    font-size: .78rem; font-weight: 900; letter-spacing: 3px; color: #fff;
+    padding: 5px 12px 5px 14px; border-radius: 999px;
+    background: linear-gradient(90deg, #ff3b3b, #ff8a3d);
+    box-shadow: 0 4px 16px rgba(255,77,77,.5);
+    animation: hotPulse 1.4s ease-in-out infinite; white-space: nowrap;
+  }
+  @keyframes hotPulse {
+    0%, 100% { box-shadow: 0 4px 16px rgba(255,77,77,.45); }
+    50% { box-shadow: 0 4px 26px rgba(255,138,61,.85); }
+  }
+
+  .product.intro-card {
+    justify-content: center; text-align: center;
+    background: linear-gradient(160deg, #181b23, #13161c);
+    border: 1px dashed rgba(255,255,255,.15);
+    cursor: default;
+  }
+  .product.intro-card:hover { transform: none; border-color: rgba(255,255,255,.25); }
+  .product.intro-card .intro-name { font-size: 1.1rem; font-weight: 700; color: #ff8a3d; margin-bottom: 10px; }
+  .product.intro-card .intro-text { color: var(--muted); font-size: .95rem; line-height: 1.8; padding: 0 6px; }
+
+  .cart-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    background: rgba(20,23,29,.94); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line); padding: 14px 0; transition: transform .25s;
+  }
+  .cart-bar .container { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+  .cart-info { font-size: .95rem; color: var(--muted); }
+  .cart-info b { color: var(--text); }
+  .cart-info .total { color: var(--accent); font-weight: 700; font-size: 1.1rem; }
+  .view-btn {
+    border: none; cursor: pointer; background: var(--accent); color: #fff;
+    font-weight: 600; font-size: .9rem; padding: 11px 26px; border-radius: 999px; transition: background .2s;
+  }
+  .view-btn:hover { background: #5b7bf0; }
+  .pulse { animation: pulse .35s ease; }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .mask {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(0,0,0,.55); opacity: 0; pointer-events: none; transition: opacity .28s;
+  }
+  .mask.open { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 100;
+    width: min(400px, 92vw); background: #14171d;
+    border-left: 1px solid var(--line); display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform .28s ease;
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px; border-bottom: 1px solid var(--line);
+  }
+  .drawer-head h2 { font-size: 1.05rem; }
+  .close-btn {
+    border: none; background: transparent; color: var(--muted);
+    font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 8px;
+  }
+  .close-btn:hover { color: var(--text); background: rgba(255,255,255,.06); }
+
+  .drawer-body { flex: 1; overflow-y: auto; padding: 10px 20px; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; font-size: .9rem; }
+  .empty .big { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+
+  .cart-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .ci-thumb {
+    width: 48px; height: 48px; flex: none; border-radius: 10px;
+    background: linear-gradient(135deg, #1e2230, #15181f);
+    display: grid; place-items: center; font-size: 1.4rem; overflow: hidden;
+  }
+  .ci-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+  .ci-info { flex: 1; min-width: 0; }
+  .ci-name { font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ci-price { color: var(--muted); font-size: .8rem; }
+  .ci-qty { display: flex; align-items: center; gap: 6px; }
+  .ci-qty button {
+    width: 24px; height: 24px; border: 1px solid var(--line);
+    background: transparent; color: var(--text); border-radius: 7px;
+    cursor: pointer; font-size: .9rem; line-height: 1; display: grid; place-items: center;
+  }
+  .ci-qty button:hover { background: rgba(255,255,255,.08); }
+  .ci-qty span { min-width: 20px; text-align: center; font-size: .88rem; }
+  .ci-del {
+    border: none; background: transparent; color: var(--muted);
+    cursor: pointer; font-size: .95rem; padding: 4px;
+  }
+  .ci-del:hover { color: #ff6b6b; }
+
+  .drawer-foot { padding: 18px 20px; border-top: 1px solid var(--line); }
+  .sum-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; font-size: .95rem; color: var(--muted);
+  }
+  .sum-row b { color: var(--accent); font-size: 1.25rem; }
+  .checkout {
+    width: 100%; border: none; cursor: pointer;
+    background: var(--accent); color: #fff; font-weight: 600;
+    font-size: .95rem; padding: 14px; border-radius: 12px; transition: background .2s;
+  }
+  .checkout:hover { background: #5b7bf0; }
+  .checkout:disabled { background: #2a2e3a; color: var(--muted); cursor: not-allowed; }
+
+  /* 收款码弹窗 */
+  .pay-modal {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.75); display: none;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .pay-modal.open { display: flex; }
+  .pay-card {
+    width: min(340px, 100%); background: #fff; border-radius: 18px;
+    overflow: hidden; color: #111; box-shadow: 0 24px 60px rgba(0,0,0,.6);
+    text-align: center;
+  }
+  .pay-head {
+    background: var(--wechat); color: #fff; padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pay-head .wx-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1rem; }
+  .pay-head .wx-logo span { font-size: 1.3rem; line-height: 1; }
+  .pay-close { background: transparent; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; }
+  .pay-body { padding: 24px 20px 20px; }
+  .pay-label { color: #888; font-size: .85rem; margin-bottom: 6px; }
+  .pay-amount { font-size: 2.2rem; font-weight: 700; color: #07c160; margin-bottom: 16px; }
+  .qr-box {
+    width: 220px; height: 220px; margin: 0 auto 16px;
+    border: 1px solid #eee; border-radius: 12px;
+    display: grid; place-items: center;
+    background: #fafafa; overflow: hidden;
+  }
+  .qr-box img { width: 100%; height: 100%; object-fit: contain; }
+  .qr-tip { color: #999; font-size: .8rem; margin-bottom: 18px; }
+  .pay-done-btn {
+    width: 100%; border: none; cursor: pointer;
+    background: var(--wechat); color: #fff; font-size: 1rem; font-weight: 600;
+    padding: 13px; border-radius: 10px; transition: opacity .2s; margin-bottom: 8px;
+  }
+  .pay-done-btn:hover { opacity: .9; }
+  .pay-cancel-btn {
+    width: 100%; border: none; cursor: pointer;
+    background: transparent; color: #999; font-size: .9rem;
+    padding: 8px; border-radius: 10px;
+  }
+  .pay-cancel-btn:hover { color: #666; }
+
+  @media (max-width: 700px) {
+    .product.featured { grid-column: span 1; flex-direction: column; align-items: stretch; padding: 18px 16px; }
+    .product.featured .thumb { width: 100%; height: 140px; }
+    .product.featured .p-info { padding-top: 30px; }
+    .hot-excl { font-size: 1.4rem; }
+    .hot-text { font-size: .7rem; letter-spacing: 2px; }
+  }
+  @media (max-width: 520px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .thumb { height: 100px; font-size: 2.2rem; }
+    .product .row { flex-direction: column; align-items: stretch; }
+    .add-btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="container">
+    <div class="logo">小商店<span>.</span></div>
+  </nav>
+</header>
+
+<section class="page-title">
+  <div class="container">
+    <h1>今日好物</h1>
+    <p>挑几件喜欢的，加入购物车吧</p>
+  </div>
+</section>
+
+<main class="container">
+  <div class="grid" id="productGrid"></div>
+</main>
+
+<div class="cart-bar" id="cartBar">
+  <div class="container">
+    <div class="cart-info">
+      🛒 已选 <b id="cartCount">0</b> 件 · 合计 <span class="total" id="cartTotal">¥0.00</span>
+    </div>
+    <button class="view-btn" id="viewBtn">查看购物车</button>
+  </div>
+</div>
+
+<div class="mask" id="mask"></div>
+
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>购物车</h2>
+    <button class="close-btn" id="closeBtn" aria-label="关闭">✕</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div class="sum-row">
+      <span>合计</span>
+      <b id="drawerTotal">¥0.00</b>
+    </div>
+    <button class="checkout" id="checkoutBtn" disabled>去结算</button>
+  </div>
+</aside>
+
+<!-- 微信收款码弹窗 -->
+<div class="pay-modal" id="payModal">
+  <div class="pay-card">
+    <div class="pay-head">
+      <div class="wx-logo"><span>💚</span> 微信收款</div>
+      <button class="pay-close" id="payClose">✕</button>
+    </div>
+    <div class="pay-body">
+      <div class="pay-label">应付金额</div>
+      <div class="pay-amount" id="payAmount">¥0.00</div>
+      <div class="qr-box">
+        <img src="pay.jpg" alt="微信收款码" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'color:#999;font-size:.85rem;padding:20px;text-align:center\'>请将收款码命名为 pay.jpg<br>放在网页同目录</span>'">
+      </div>
+      <div class="qr-tip">长按识别二维码，或截图后用微信扫码转账</div>
+      <button class="pay-done-btn" id="payDone">我已完成支付</button>
+      <button class="pay-cancel-btn" id="payCancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   1. 商品数据
+   link 已改为本地详情页 detail.html
+   ============================================================ */
+const products = [
+  { id: 1, name: '放音炮的内裤', price: 0.91, image: '1.jpg', emoji: '🩲',
+    desc: '放音炮专属 · 限购3件', maxQty: 3, featured: true,
+    link: 'detail.html' },
+  { id: 2, intro: true, name: '放音炮的内裤', text: '67 内裤，0.91 元一个，爱买不买。我用了不烧心。' },
+  { id: 3, name: '陶瓷马克杯', price: 0.78, emoji: '☕', desc: '手工釉面 · 350ml' },
+  { id: 4, name: '机械键盘',   price: 0.78, emoji: '⌨️', desc: '红轴 · 白色背光' },
+  { id: 5, name: '桌面台灯',   price: 0.78, emoji: '💡', desc: '三档色温 · 护眼' },
+  { id: 6, name: '点阵笔记本', price: 0.78, emoji: '📓', desc: 'A5 · 100 页' },
+];
+
+const CART_KEY = 'xiaoshop_cart';
+const cart = {};
+function loadCart(){ try{ const d=JSON.parse(localStorage.getItem(CART_KEY))||{}; Object.keys(cart).forEach(k=>delete cart[k]); Object.assign(cart,d);}catch(e){} }
+function saveCart(){ try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }catch(e){} }
+loadCart();
+
+const $ = id => document.getElementById(id);
+const grid       = $('productGrid');
+const cartBody   = $('cartBody');
+const mask       = $('mask');
+const drawer     = $('drawer');
+const cartBar    = $('cartBar');
+const payModal   = $('payModal');
+const payAmount  = $('payAmount');
+const payDone    = $('payDone');
+const payCancel  = $('payCancel');
+const payClose   = $('payClose');
+
+const money = n => '¥' + n.toFixed(2);
+
+function renderProducts() {
+  grid.innerHTML = products.map(p => {
+    if (p.intro) {
+      return `
+        <div class="product intro-card">
+          <div class="intro-name">${p.name}</div>
+          <div class="intro-text">${p.text}</div>
+        </div>`;
+    }
+
+    const thumbContent = p.image
+      ? `<img src="${p.image}" alt="${p.name}">`
+      : p.emoji;
+
+    const hotTag = p.featured
+      ? `<div class="hot-tag">
+           <span class="hot-excl">!!!</span>
+           <span class="hot-text">火爆商品</span>
+         </div>`
+      : '';
+
+    const linkAttr = p.link ? ` data-link="${p.link}"` : '';
+
+    return `
+      <div class="product${p.featured ? ' featured' : ''}"${linkAttr}>
+        ${hotTag}
+        <div class="thumb">${thumbContent}</div>
+        <div class="p-info">
+          <h3>${p.name}</h3>
+          <p class="desc">${p.desc}</p>
+          <div class="row">
+            <span class="price">${money(p.price)}</span>
+            <button class="add-btn" data-id="${p.id}">加入购物车</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function addToCart(id) {
+  const product = products.find(x => x.id === id);
+  if (!product || product.intro) return;
+  const maxQty = product.maxQty || Infinity;
+
+  if ((cart[id] || 0) >= maxQty) {
+    alert(`该商品最多只能加购 ${maxQty} 件哦`);
+    return;
+  }
+
+  cart[id] = (cart[id] || 0) + 1;
+  updateAll();
+  cartBar.classList.remove('pulse');
+  void cartBar.offsetWidth;
+  cartBar.classList.add('pulse');
+}
+
+function changeQty(id, delta) {
+  const product = products.find(x => x.id === id);
+  if (!product || product.intro) return;
+  const maxQty = product.maxQty || Infinity;
+
+  const next = (cart[id] || 0) + delta;
+
+  if (delta > 0 && next > maxQty) {
+    alert(`该商品最多只能加购 ${maxQty} 件哦`);
+    return;
+  }
+
+  if (next <= 0) delete cart[id];
+  else cart[id] = next;
+  updateAll();
+}
+
+function removeItem(id) {
+  delete cart[id];
+  updateAll();
+}
+
+function getCount() {
+  return Object.values(cart).reduce((a, b) => a + b, 0);
+}
+
+function getTotal() {
+  return Object.entries(cart).reduce((sum, [id, qty]) => {
+    const p = products.find(x => x.id === Number(id));
+    return sum + (p ? p.price * qty : 0);
+  }, 0);
+}
+
+function renderCart() {
+  const ids = Object.keys(cart);
+
+  if (ids.length === 0) {
+    cartBody.innerHTML = `
+      <div class="empty">
+        <span class="big">🛒</span>
+        购物车还是空的
+      </div>`;
+  } else {
+    cartBody.innerHTML = ids.map(id => {
+      const p = products.find(x => x.id === Number(id));
+      if (!p || p.intro) return '';
+      const qty = cart[id];
+      const thumbContent = p.image
+        ? `<img src="${p.image}" alt="${p.name}">`
+        : p.emoji;
+
+      return `
+        <div class="cart-item">
+          <div class="ci-thumb">${thumbContent}</div>
+          <div class="ci-info">
+            <div class="ci-name">${p.name}</div>
+            <div class="ci-price">${money(p.price)} × ${qty} = ${money(p.price * qty)}</div>
+          </div>
+          <div class="ci-qty">
+            <button data-act="minus" data-id="${p.id}">−</button>
+            <span>${qty}</span>
+            <button data-act="plus" data-id="${p.id}">+</button>
+          </div>
+          <button class="ci-del" data-act="del" data-id="${p.id}" title="删除">✕</button>
+        </div>`;
+    }).join('');
+  }
+
+  const count = getCount();
+  const total = getTotal();
+
+  $('cartCount').textContent  = count;
+  $('cartTotal').textContent  = money(total);
+  $('drawerTotal').textContent = money(total);
+  $('checkoutBtn').disabled = count === 0;
+}
+
+function updateAll() { saveCart(); renderCart(); }
+// 从详情页返回时同步购物车
+window.addEventListener('pageshow', () => { loadCart(); renderCart(); });
+window.addEventListener('storage', e => { if (e.key === CART_KEY) { loadCart(); renderCart(); } });
+
+function openPayModal() {
+  const total = getTotal();
+  if (total <= 0) return;
+  payAmount.textContent = money(total);
+  payModal.classList.add('open');
+}
+
+function closePayModal() { payModal.classList.remove('open'); }
+
+function handlePayDone() {
+  if (!confirm('确认已完成转账？点击确定后购物车将清空。')) return;
+  Object.keys(cart).forEach(k => delete cart[k]);
+  updateAll();
+  closePayModal();
+  alert('感谢购买！');
+}
+
+grid.addEventListener('click', e => {
+  const addBtn = e.target.closest('.add-btn');
+  if (addBtn) {
+    addToCart(Number(addBtn.dataset.id));
+    const original = addBtn.textContent;
+    addBtn.textContent = '已加入 ✓';
+    addBtn.classList.add('added');
+    setTimeout(() => {
+      addBtn.textContent = original;
+      addBtn.classList.remove('added');
+    }, 900);
+    return;
+  }
+
+  // 卡片跳转（本地 detail.html，同窗口打开）
+  const card = e.target.closest('.product[data-link]');
+  if (card) {
+    location.href = card.dataset.link;
+  }
+});
+
+cartBody.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = Number(btn.dataset.id);
+  const act = btn.dataset.act;
+  if (act === 'plus')  changeQty(id, 1);
+  if (act === 'minus') changeQty(id, -1);
+  if (act === 'del')   removeItem(id);
+});
+
+function openCart()  { drawer.classList.add('open');  mask.classList.add('open'); }
+function closeCart() { drawer.classList.remove('open'); mask.classList.remove('open'); }
+
+$('viewBtn').addEventListener('click', openCart);
+$('closeBtn').addEventListener('click', closeCart);
+mask.addEventListener('click', closeCart);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+$('checkoutBtn').addEventListener('click', openPayModal);
+payClose.addEventListener('click', closePayModal);
+payCancel.addEventListener('click', closePayModal);
+payDone.addEventListener('click', handlePayDone);
+
+payModal.addEventListener('click', e => {
+  if (e.target === payModal) closePayModal();
+});
+
+renderProducts();
+updateAll();
+</script>
+
+</body>
+</html>

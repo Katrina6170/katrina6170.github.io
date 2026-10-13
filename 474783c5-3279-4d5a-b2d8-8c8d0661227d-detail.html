@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方云浩的内裤 - 奶娃精选</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+            background-color: #fafafa; color: #333;
+            display: flex; justify-content: center; padding: 40px 20px;
+        }
+        .container {
+            width: 100%; max-width: 1100px; background: #ffffff;
+            border-radius: 24px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+            padding: 32px; position: relative; overflow: hidden;
+        }
+
+        /* 左上角退出按钮 —— 跳回商店页 index.html */
+        .btn-exit {
+            position: absolute; top: 24px; left: 24px;
+            background: #f5f5f5; color: #888;
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 13px; text-decoration: none;
+            font-weight: 600; transition: 0.3s;
+            border: 1px solid #eee;
+        }
+        .btn-exit:hover {
+            background: #ff9a9e; color: white; border-color: #ff9a9e;
+            box-shadow: 0 4px 12px rgba(255, 154, 158, 0.3);
+        }
+
+        .container::after { content: '✧'; position: absolute; top: 30px; right: 30px; font-size: 16px; color: #b8e0d2; opacity: 0.7; }
+
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 20px; border-bottom: 2px dashed #f0f0f0; margin-bottom: 28px;
+            margin-top: 10px;
+        }
+        .title { font-size: 26px; font-weight: 700; color: #2c2c2c; letter-spacing: 1px; }
+        .tag-hot {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #fff;
+            padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 154, 158, 0.3); animation: softPulse 2s infinite;
+        }
+        @keyframes softPulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+        .main-content { display: flex; gap: 24px; margin-bottom: 24px; }
+        .media-section {
+            flex: 2; background-color: #fff9fa; border-radius: 18px; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 420px; border: 1px solid #f5e6ea;
+        }
+        .media-section img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+        .comment-section {
+            flex: 1; background: #fcfcfc; border: 1px solid #f0f0f0; border-radius: 18px;
+            padding: 20px; display: flex; flex-direction: column; height: 420px;
+        }
+        .comment-title { font-weight: 700; font-size: 15px; color: #444; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed #eee; }
+        .comment-list { flex-grow: 1; overflow-y: auto; font-size: 13px; color: #666; line-height: 1.6; scrollbar-width: thin; margin-bottom: 10px; }
+        .comment-list::-webkit-scrollbar { width: 4px; }
+        .comment-list::-webkit-scrollbar-thumb { background-color: #eee; border-radius: 4px; }
+        .comment-item { margin-bottom: 12px; background: #fff; padding: 10px 14px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border-left: 3px solid #ffd1dc; word-break: break-all; }
+        .comment-input-area { display: flex; gap: 8px; padding-top: 10px; border-top: 1px dashed #eee; }
+        .comment-input-area input { flex: 1; padding: 10px 14px; border: 1px solid #eee; border-radius: 20px; outline: none; font-size: 13px; background: #fff; transition: border-color 0.3s; }
+        .comment-input-area input:focus { border-color: #ffd1dc; }
+        .comment-input-area button { padding: 0 16px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: white; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .comment-input-area button:active { transform: scale(0.95); }
+
+        .description-section { background: #fdfdfd; padding: 20px 24px; border-radius: 16px; margin-bottom: 28px; border: 1px solid #f0f0f0; border-left: 4px solid #b8e0d2; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .description-section h3 { font-size: 16px; color: #333; margin-bottom: 10px; }
+        .description-section p { font-size: 14px; color: #666; line-height: 1.8; margin: 4px 0; }
+        .price { color: #ff6b6b; font-weight: 700; font-size: 18px; }
+
+        .bottom-section { display: flex; gap: 20px; margin-bottom: 28px; }
+        .mini-card { flex: 1; border: 1px solid #f0f0f0; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; transition: 0.3s; background: #fff; text-decoration: none; color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .mini-card:hover { border-color: #b8e0d2; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184, 224, 210, 0.2); }
+        .mini-card .img-box { width: 70px; height: 70px; background: #f9f9f9; border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #ddd; font-size: 12px; flex-shrink: 0; }
+        .mini-card .img-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+        .mini-card .info h4 { font-size: 14px; margin-bottom: 4px; color: #333; }
+        .mini-card .info p { font-size: 12px; color: #999; }
+        .arrow { margin-left: auto; color: #ccc; font-size: 18px; transition: 0.3s; }
+        .mini-card:hover .arrow { transform: translateX(4px); color: #b8e0d2; }
+
+        .buy-actions { display: flex; gap: 16px; max-width: 700px; margin: 0 auto; }
+        .btn { flex: 1; padding: 18px 0; font-size: 17px; font-weight: 700; border-radius: 50px; cursor: pointer; border: none; transition: 0.3s; letter-spacing: 1px; text-align: center; }
+        .btn-buy-now { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #fff; box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3); }
+        .btn-buy-now:hover { transform: translateY(-3px); }
+        .btn-add-cart { background: #fff; color: #ff9a9e; border: 2px solid #ff9a9e; }
+        .btn-add-cart:hover { background: #fff9fa; transform: translateY(-3px); }
+
+        .shop-name { position: absolute; bottom: 12px; left: 24px; font-size: 11px; color: #ccc; letter-spacing: 1px; }
+
+        /* 弹窗和遮罩层 */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: #fff; border-radius: 24px; padding: 30px; width: 90%; max-width: 360px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); transform: translateY(20px); transition: 0.3s; }
+        .overlay.active .modal { transform: translateY(0); }
+        .modal h3 { font-size: 18px; color: #333; margin-bottom: 20px; font-weight: 700; }
+        .quantity-control { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 24px; }
+        .quantity-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #eee; background: #fff; font-size: 20px; color: #666; cursor: pointer; transition: 0.2s; }
+        .quantity-btn:active { background: #f5f5f5; }
+        .quantity-display { font-size: 24px; font-weight: 700; color: #ff6b6b; min-width: 40px; }
+        .modal-actions { display: flex; gap: 12px; }
+        .modal-actions button { flex: 1; padding: 14px 0; border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-cancel { background: #f5f5f5; color: #666; }
+        .btn-confirm { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #fff; }
+        .btn-confirm:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
+
+        /* 付款页面 */
+        .payment-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; display: flex; flex-direction: column; padding: 30px 20px; opacity: 0; visibility: hidden; transition: 0.4s; overflow-y: auto; }
+        .payment-screen.active { opacity: 1; visibility: visible; }
+        .payment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .payment-header h2 { font-size: 20px; color: #333; }
+        .close-payment { font-size: 24px; color: #ccc; cursor: pointer; background: none; border: none; }
+        .order-card { background: #fdfdfd; border: 1px solid #f0f0f0; border-radius: 16px; padding: 24px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .order-card .product-info { display: flex; justify-content: space-between; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed #eee; }
+        .order-card .product-info .name { font-weight: 700; color: #333; }
+        .order-card .product-info .unit-price { color: #999; font-size: 14px; }
+        .order-card .detail-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #666; }
+        .order-card .detail-row.total { font-size: 18px; font-weight: 700; color: #ff6b6b; margin-top: 16px; padding-top: 16px; border-top: 1px dashed #eee; }
+        .pay-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #fff; border: none; border-radius: 50px; font-size: 18px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3); margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .main-content { flex-direction: column; }
+            .comment-section { height: 300px; }
+            .bottom-section { flex-direction: column; }
+            .media-section { min-height: 300px; }
+            .buy-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 左上角退出按钮：跳回商店页 index.html -->
+    <a href="index.html" class="btn-exit">← 退出</a>
+
+    <header class="header">
+        <div class="title">方云浩的内裤</div>
+        <div class="tag-hot">🔥 热卖中</div>
+    </header>
+
+    <div class="main-content">
+        <div class="media-section">
+            <!-- 替换成你自己的图片文件名或地址 -->
+            <img src="1.jpg" alt="方云浩的内裤 - 实拍展示">
+        </div>
+        <aside class="comment-section">
+            <div class="comment-title">评论</div>
+            <div class="comment-list" id="comment-list"></div>
+            <div class="comment-input-area">
+                <input type="text" id="comment-input" placeholder="写下你的评论..." maxlength="50">
+                <button id="comment-submit">发布</button>
+            </div>
+        </aside>
+    </div>
+
+    <div class="description-section">
+        <h3>📋 商品介绍</h3>
+        <p><strong>路星广场新之作 方云浩的内裤</strong></p>
+        <p>售价：<span class="price">0.91元</span></p>
+        <p>爱买不买。我这个用了不烧心，你那个自带的用了烧心你让我感觉到</p>
+    </div>
+
+    <!-- 底部两个小卡片，已去掉跳转和弹窗，只作展示 -->
+    <div class="bottom-section">
+        <div class="mini-card">
+            <div class="img-box"><img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?q=80&w=200" alt="上一个"></div>
+            <div class="info"><h4>上一个</h4><p>方云浩的袜子</p></div>
+            <span class="arrow">›</span>
+        </div>
+        <div class="mini-card">
+            <div class="img-box"><img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=200" alt="下一个"></div>
+            <div class="info"><h4>下一个</h4><p>方云浩的背心</p></div>
+            <span class="arrow">›</span>
+        </div>
+    </div>
+
+    <div class="buy-actions">
+        <button class="btn btn-add-cart" id="btn-add-cart">加入购物车 (0/3)</button>
+        <button class="btn btn-buy-now" id="btn-buy-now">直接购买</button>
+    </div>
+
+    <div class="shop-name">六七广场</div>
+</div>
+
+<!-- 弹窗和遮罩层 -->
+<div class="overlay" id="quantity-modal">
+    <div class="modal">
+        <h3 id="modal-title">选择购买数量</h3>
+        <div class="quantity-control">
+            <button class="quantity-btn" id="btn-minus">-</button>
+            <div class="quantity-display" id="quantity-display">1</div>
+            <button class="quantity-btn" id="btn-plus">+</button>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" id="btn-cancel-modal">取消</button>
+            <button class="btn-confirm" id="btn-confirm-action">确定</button>
+        </div>
+    </div>
+</div>
+
+<div class="payment-screen" id="payment-screen">
+    <div class="payment-header">
+        <h2>确认订单</h2>
+        <button class="close-payment" id="btn-close-payment">&times;</button>
+    </div>
+    <div class="order-card">
+        <div class="product-info">
+            <span class="name">方云浩的内裤</span>
+            <span class="unit-price">单价: 0.91元</span>
+        </div>
+        <div class="detail-row"><span>购买数量</span><span id="payment-qty">1 件</span></div>
+        <div class="detail-row"><span>商品总价</span><span id="payment-subtotal">0.91 元</span></div>
+        <div class="detail-row total"><span>应付金额</span><span id="payment-total">0.91 元</span></div>
+    </div>
+    <button class="pay-btn" id="btn-pay-submit">确认支付 0.91 元</button>
+</div>
+
+<script>
+    // 评论功能
+    const commentList = document.getElementById('comment-list');
+    const commentInput = document.getElementById('comment-input');
+    const submitBtn = document.getElementById('comment-submit');
+    let comments = [];
+    try { comments = JSON.parse(localStorage.getItem('fangyunhao_comments')) || []; } catch(e) {}
+    function renderComments() {
+        commentList.innerHTML = '';
+        comments.forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'comment-item'; div.textContent = c.text;
+            commentList.appendChild(div);
+        });
+    }
+    function addComment() {
+        const text = commentInput.value.trim();
+        if (!text) return alert('评论不能为空哦！');
+        comments.unshift({ text: text, time: Date.now() });
+        try { localStorage.setItem('fangyunhao_comments', JSON.stringify(comments)); } catch(e) {}
+        renderComments(); commentInput.value = '';
+    }
+    submitBtn.addEventListener('click', addComment);
+    commentInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addComment(); });
+    renderComments();
+
+    // 购买与购物车
+    const CART_KEY = 'xiaoshop_cart', PID = 1;
+    function readCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY))||{}; }catch(e){ return {}; } }
+    function writeCount(n){ const c=readCart(); if(n>0) c[PID]=n; else delete c[PID]; try{ localStorage.setItem(CART_KEY, JSON.stringify(c)); }catch(e){} }
+    let cartCount = readCart()[PID] || 0, currentAction = '', selectedQty = 1;
+    const MAX_LIMIT = 3;
+    const overlay = document.getElementById('quantity-modal'), modalTitle = document.getElementById('modal-title');
+    const qtyDisplay = document.getElementById('quantity-display'), btnMinus = document.getElementById('btn-minus');
+    const btnPlus = document.getElementById('btn-plus'), btnCancel = document.getElementById('btn-cancel-modal');
+    const btnConfirm = document.getElementById('btn-confirm-action'), btnAddCart = document.getElementById('btn-add-cart');
+    const btnBuyNow = document.getElementById('btn-buy-now'), paymentScreen = document.getElementById('payment-screen');
+    const paymentQty = document.getElementById('payment-qty'), paymentSubtotal = document.getElementById('payment-subtotal');
+    const paymentTotal = document.getElementById('payment-total'), btnPaySubmit = document.getElementById('btn-pay-submit');
+    const btnClosePayment = document.getElementById('btn-close-payment');
+
+    function updateCartButton() {
+        btnAddCart.textContent = `加入购物车 (${cartCount}/3)`;
+        if (cartCount >= MAX_LIMIT) { btnAddCart.disabled = true; btnAddCart.style.opacity = '0.5'; btnAddCart.textContent = '购物车已满 (3/3)'; }
+        else { btnAddCart.disabled = false; btnAddCart.style.opacity = '1'; }
+    }
+    function openQuantityModal(action) {
+        currentAction = action; selectedQty = 1;
+        if (action === 'buy') modalTitle.textContent = '直接购买 - 选择数量';
+        else {
+            const remaining = MAX_LIMIT - cartCount;
+            if (remaining <= 0) return;
+            modalTitle.textContent = `加入购物车 (还可加购 ${remaining} 件)`;
+        }
+        qtyDisplay.textContent = selectedQty; checkQuantityLimit(); overlay.classList.add('active');
+    }
+    function checkQuantityLimit() {
+        let maxSelectable = (currentAction === 'cart') ? (MAX_LIMIT - cartCount) : MAX_LIMIT;
+        btnMinus.disabled = (selectedQty <= 1); btnMinus.style.opacity = (selectedQty <= 1) ? '0.5' : '1';
+        btnPlus.disabled = (selectedQty >= maxSelectable); btnPlus.style.opacity = (selectedQty >= maxSelectable) ? '0.5' : '1';
+    }
+    btnMinus.addEventListener('click', () => { if (selectedQty > 1) { selectedQty--; qtyDisplay.textContent = selectedQty; checkQuantityLimit(); } });
+    btnPlus.addEventListener('click', () => {
+        let maxSelectable = (currentAction === 'cart') ? (MAX_LIMIT - cartCount) : MAX_LIMIT;
+        if (selectedQty < maxSelectable) { selectedQty++; qtyDisplay.textContent = selectedQty; checkQuantityLimit(); }
+    });
+    function closeModal() { overlay.classList.remove('active'); }
+    btnCancel.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    btnConfirm.addEventListener('click', () => {
+        if (currentAction === 'buy') { closeModal(); showPaymentScreen(selectedQty); }
+        else { cartCount += selectedQty; writeCount(cartCount); updateCartButton(); closeModal(); alert(`成功加入 ${selectedQty} 件到购物车！当前购物车：${cartCount} 件`); }
+    });
+    btnBuyNow.addEventListener('click', () => openQuantityModal('buy'));
+    btnAddCart.addEventListener('click', () => { if (cartCount >= MAX_LIMIT) return alert('购物车已达上限（3件）！'); openQuantityModal('cart'); });
+
+    function showPaymentScreen(qty) {
+        const total = (0.91 * qty).toFixed(2);
+        paymentQty.textContent = `${qty} 件`; paymentSubtotal.textContent = `${total} 元`;
+        paymentTotal.textContent = `${total} 元`; btnPaySubmit.textContent = `确认支付 ${total} 元`;
+        paymentScreen.classList.add('active');
+    }
+    btnPaySubmit.addEventListener('click', () => {
+        alert('🎉 支付成功！（虚构页面）'); closePaymentScreen();
+    });
+    function closePaymentScreen(){ paymentScreen.classList.remove('active'); }
+    btnClosePayment.addEventListener('click', closePaymentScreen);
+    window.addEventListener('pageshow', () => { cartCount = readCart()[PID] || 0; updateCartButton(); });
+    updateCartButton();
+</script>
+</body>
+</html>
